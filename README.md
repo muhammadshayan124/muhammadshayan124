@@ -2,38 +2,72 @@
 
 # muhammadshayan124
 
-**AI Engineer** building intelligent systems that scale — LLM agents, deep learning, and production ML pipelines.
+**AI Engineer** building LLM agents, evaluated ML systems and the tooling around them.
 
 [![GitHub followers](https://img.shields.io/github/followers/muhammadshayan124?style=flat&logo=github)](https://github.com/muhammadshayan124)
 [![Profile views](https://komarev.com/ghpvc/?username=muhammadshayan124&style=flat&color=blue)](https://github.com/muhammadshayan124)
 
 </div>
 
-I turn ideas into working AI systems — from retrieval-augmented agents to deep learning
-models trained and shipped end to end. Currently focused on **LLM applications & agentic
-systems**, **MLOps/infra**, and **applied ML/CV/NLP**.
+I build AI systems and then try to break my own claims about them. Most of what is below
+carries an evaluation section that says what the numbers do *not* show, and several
+projects include a note on a bug that only real data or CI exposed.
 
-## Flagship project
+## Selected work
 
-### 🛰️ [Sentinel](https://github.com/muhammadshayan124/sentinel) — Autonomous Multimodal RAG Agent
+### [manifest](https://github.com/muhammadshayan124/manifest) — EU AI Act Article 50 scanner
+
+Static analysis that flags chat interfaces with no AI disclosure and generative-content
+pipelines with no labeling step (SARIF output, GitHub Action, pre-commit hook). v0.1 passed
+its own tests and flagged `asyncio.run` and minified bundles on real code. I labelled every
+finding on 13 real codebases by hand and rebuilt the detectors on an AST: strict precision
+went from 33% to 88%. The write-up includes the part that does not flatter it: on four apps
+I had not looked at, a chat interface was found in only one of them at first contact.
+
+### [typology](https://github.com/muhammadshayan124/typology) — AML transaction-monitoring detector
+
+Graph-aware anomaly detection scored on precision/recall, not accuracy. The first version
+computed features over the whole dataset, so each transaction saw its own future. Rebuilt as
+point-in-time features with a chronological split; `typology leakage` measures the cost:
+PR-AUC 0.988 → 0.876, with an amount-only baseline (0.726) to show what the graph adds.
+
+### [flux](https://github.com/muhammadshayan124/flux) — German grid-load and renewables forecaster
+
+Day-ahead forecasts from SMARD data, with an ablation on identical held-out rows. Naive
+persistence barely beats a calendar model for wind; adding one weather-forecast feature set
+cuts onshore-wind error from 64.8% to 24.0% NMAE. The README states why that is an upper
+bound (archived forecasts are not true day-ahead issues).
+
+### [Sentinel](https://github.com/muhammadshayan124/sentinel) — multimodal RAG agent
 
 [![CI](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/muhammadshayan124/sentinel/blob/main/README.md)
-[![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://github.com/muhammadshayan124/sentinel)
 
-A production-shaped RAG agent that ingests PDFs, text, and images (CLIP embeddings for
-hybrid text+image retrieval), answers questions through a ReAct-style tool-calling loop,
-and ships with what most demos skip: retrieval/answer evals, OpenTelemetry tracing, and a
-full CI/CD pipeline with Docker packaging.
+Ingests PDFs, text and images (CLIP embeddings for hybrid retrieval), answers through a
+ReAct-style tool loop, and ships with retrieval and answer evals, OpenTelemetry tracing and
+CI/CD with Docker packaging.
 
-## Other projects
+### Agent systems with the safety logic under test
+
+| Project | What it is | What the tests found |
+|---|---|---|
+| [scout](https://github.com/muhammadshayan124/scout) | Multi-agent lead-gen pipeline exposed as an MCP server, with a gated email sender, warmup ramp, kill switch and suppression list | A draft for a non-email channel could have been sent by SMTP; reply matching was case-sensitive |
+| [voice-proxy](https://github.com/muhammadshayan124/voice-proxy) | Personal voice/chat assistant with a deterministic AI disclosure and a hard escalation boundary | Malformed or blocked model output crashed a live turn instead of escalating |
+
+## Open-source contributions (under review, not merged)
+
+| PR | Change |
+|---|---|
+| [agno-agi/agno#10175](https://github.com/agno-agi/agno/pull/10175) | `EurostatTools`: live EU statistics for agents |
+| [crewAIInc/crewAI#7457](https://github.com/crewAIInc/crewAI/pull/7457) | `EurostatTool` for CrewAI agents |
+
+## Also
 
 | Project | Description |
 |---|---|
-| [github-crawler](https://github.com/muhammadshayan124/github-crawler) | High-throughput GitHub GraphQL crawler ingesting star counts for 100k+ repos into PostgreSQL, scheduled via GitHub Actions. |
-| [Histopathology-Image-Classification](https://github.com/muhammadshayan124/Histopathology-Image-Classification) | CNN-based histopathology image classifier (TensorFlow/Keras) for cancer detection from microscopy slides. |
-| [Fake-News-Detection-Using-Machine-Learning](https://github.com/muhammadshayan124/Fake-News-Detection-Using-Machine-Learning) | NLP text-classification pipeline for detecting fake news using classical ML models. |
-| [mindfull_buddy](https://github.com/muhammadshayan124/mindfull_buddy) | FastAPI + LLM-powered mental wellness chatbot backend, part of a multi-service final year project. |
+| [github-crawler](https://github.com/muhammadshayan124/github-crawler) | GitHub GraphQL crawler ingesting star counts for 100k+ repos into PostgreSQL, scheduled via GitHub Actions. |
+| [repolens](https://github.com/muhammadshayan124/repolens) | GitHub repo health auditor: docs, CI, tests, licensing and secret-leak checks. |
+| [Histopathology-Image-Classification](https://github.com/muhammadshayan124/Histopathology-Image-Classification) | CNN-based histopathology image classifier (TensorFlow/Keras). |
+| [Fake-News-Detection-Using-Machine-Learning](https://github.com/muhammadshayan124/Fake-News-Detection-Using-Machine-Learning) | NLP text-classification pipeline using classical ML. |
 
 ## Tech stack
 
@@ -47,15 +81,8 @@ full CI/CD pipeline with Docker packaging.
 ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/-GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
-## GitHub stats
-
-<div align="center">
-<img height="165" src="https://github-readme-stats.vercel.app/api?username=muhammadshayan124&show_icons=true&theme=default&hide_border=true" />
-<img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=muhammadshayan124&layout=compact&hide_border=true" />
-</div>
-
 ---
 
 <div align="center">
-<sub>Open to collaborating on LLM/agent tooling and ML infra projects — check out <a href="https://github.com/muhammadshayan124/sentinel">Sentinel</a> or open an issue to say hi.</sub>
+<sub>Open to collaborating on LLM/agent tooling and ML infra projects — open an issue to say hi.</sub>
 </div>
