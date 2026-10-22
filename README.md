@@ -15,6 +15,15 @@ projects include a note on a bug that only real data or CI exposed.
 
 ## Selected work
 
+### [agentgate](https://github.com/muhammadshayan124/agentgate) — evaluation harness for tool-using agents
+
+Agents are stochastic, so "fail the PR if the score drops" fires on identical builds. agentgate
+records trajectories, checks them with deterministic rules (including must-never safety checks) and
+gates changes with a statistical test. Measured on 200 replications against a simulated agent: the
+naive gate fires on 43% of unchanged builds, agentgate on 3%. A mean-based test caught a single broken
+task 8% of the time, which is why it has a per-task rule (100%, no extra false alarms). The README
+says plainly that no real LLM agent or judge has been evaluated with it yet.
+
 ### [manifest](https://github.com/muhammadshayan124/manifest) — EU AI Act Article 50 scanner
 
 Static analysis that flags chat interfaces with no AI disclosure and generative-content
