@@ -27,7 +27,8 @@ says plainly that no real LLM agent or judge has been evaluated with it yet.
 ### [manifest](https://github.com/muhammadshayan124/manifest) — EU AI Act Article 50 scanner
 
 Static analysis that flags chat interfaces with no AI disclosure and generative-content
-pipelines with no labeling step (SARIF output, GitHub Action, pre-commit hook). v0.1 passed
+pipelines with no labeling step (SARIF output, GitHub Action, pre-commit hook), plus a `manifest act`
+toolkit: risk-tier classifier (prohibited / high-risk / transparency / GPAI), checklist and technical-documentation generator. v0.1 passed
 its own tests and flagged `asyncio.run` and minified bundles on real code. I labelled every
 finding on 13 real codebases by hand and rebuilt the detectors on an AST: strict precision
 went from 33% to 88%. The write-up includes the part that does not flatter it: on four apps
@@ -46,6 +47,38 @@ Day-ahead forecasts from SMARD data, with an ablation on identical held-out rows
 persistence barely beats a calendar model for wind; adding one weather-forecast feature set
 cuts onshore-wind error from 64.8% to 24.0% NMAE. The README states why that is an upper
 bound (archived forecasts are not true day-ahead issues).
+
+### [fxcast](https://github.com/muhammadshayan124/fxcast) — can you forecast euro exchange rates? An evaluation harness
+
+Walk-forward backtests on ECB data with training labels purged at the forecast origin, Diebold-Mariano tests with the
+overlap correction, and Holm adjustment across all 72 comparisons. Result: for the rate itself, **no model beats the random walk**
+(0 of 72 significantly better; the 10 significant results are the boosted trees being *worse*). Volatility is different: GARCH, EWMA and HAR beat
+constant variance in 45 of 54 corrected comparisons, and the one exception (CHF) is a single event, the 2015 removal of the Swiss floor. A leakage test caught
+my own purge guard checking the wrong thing.
+
+### [recsys](https://github.com/muhammadshayan124/recsys) — recommender benchmark with a FastAPI service
+
+MovieLens-1M under a global time split and full-ranking metrics (no sampled negatives), tuned on validation and scored once on test. ALS, EASE and item-kNN are
+statistically indistinguishable (NDCG@10 0.196-0.198 against 0.174 for popularity); the two-tower model is **significantly worse** (-0.013, adjusted p = 0.003) but
+covers 14-16% of the catalogue against 2-7%. Building the Docker image caught a runtime dependency I had listed as dev-only.
+
+### [eurag](https://github.com/muhammadshayan124/eurag) — retrieval benchmark over six EU digital-law acts
+
+67 hand-written questions whose gold articles are mechanically verified against the legal text. Dense retrieval beats BM25 by about 0.2 NDCG@10 on paraphrased
+questions; equal-weight hybrid fusion did not help; many misses are cross-act confusion (an oracle act filter lifts hit@5 from 0.85 to 0.93). pgvector and Qdrant are
+indistinguishable at the real corpus size and diverge only on a synthetic 100k scale-up. Retrieval only: no generation or faithfulness evaluation.
+
+### [volops](https://github.com/muhammadshayan124/volops) — MLOps around a model that works (FX volatility)
+
+MLflow tracking, a promotion gate, a monitored FastAPI service, Prometheus alerts, a Grafana dashboard, Kubernetes manifests (schema-validated) and CI/CD, verified end to end
+under Docker Compose. My first design retrained on input drift; replaying a model trained 14 months earlier showed 79% of its inputs "drifting" while it still beat the benchmark
+on all 12 series, so drift is now advisory and only measured out-of-sample accuracy triggers a retrain. A unit test also caught a label leak in my own holdout fit. Not deployed to a cloud cluster.
+
+### [evalgate](https://github.com/muhammadshayan124/evalgate) — regression gate for LLM applications
+
+Fails a PR unless the candidate is shown non-inferior within a stated margin (paired bootstrap), because "not significantly worse" is not evidence of no regression: in the
+bundled example 12 regressions against 4 improvements gives McNemar p = 0.077, which a significance gate would pass, and the gate blocks it. The gate's error rates are checked by
+simulation, and it reports how large a regression the eval set could have detected at all.
 
 ### [Sentinel](https://github.com/muhammadshayan124/sentinel) — multimodal RAG agent
 
