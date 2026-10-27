@@ -93,6 +93,13 @@ The first run exposed my parser and an OCR angle classifier that flipped short n
 accuracy at severities 0-2, 61.8% on bad fax-quality pages; the 1.7B model alone is far worse than rules; the hybrid keeps accuracy but cuts the review needed for a 1% error target from 25% to 14% of fields.
 Synthetic documents only, and no real handwriting.
 
+### [fxnews-qlora](https://github.com/muhammadshayan124/fxnews-qlora) — does QLoRA fine-tuning beat the simple baselines?
+
+A 1.5B model fine-tuned with 4-bit QLoRA on a T4 for financial-news sentiment, compared on one held-out test set against a majority class, keyword rules, TF-IDF + logistic regression and the same
+model prompted zero- and few-shot (bootstrap intervals, paired McNemar tests, 73 train/test duplicate headlines removed). Fine-tuned: **0.918 accuracy / 0.895 macro-F1 against TF-IDF's 0.822 / 0.751**
+(right where TF-IDF is wrong on 297 headlines, the reverse on 70), at about 200x the per-example inference cost and a GPU. Zero-shot scores 0.381, below always-Neutral, because the untuned model says
+"Bullish" 78% of the time; the README says that is a readout bias, not a verdict on LLMs. One run, one seed.
+
 ### [Sentinel](https://github.com/muhammadshayan124/sentinel) — multimodal RAG agent
 
 [![CI](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml)
