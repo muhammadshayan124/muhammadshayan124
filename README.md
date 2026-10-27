@@ -80,6 +80,19 @@ Fails a PR unless the candidate is shown non-inferior within a stated margin (pa
 bundled example 12 regressions against 4 improvements gives McNemar p = 0.077, which a significance gate would pass, and the gate blocks it. The gate's error rates are checked by
 simulation, and it reports how large a regression the eval set could have detected at all.
 
+### [euagents](https://github.com/muhammadshayan124/euagents) — multi-agent research assistant over EU digital law (LangGraph + MCP)
+
+A planner / researcher / drafter / verifier graph over two MCP tool servers, with a human approval gate before the only side-effecting tool, retries with fault injection and JSONL
+tracing, run on a 1.7B local model on CPU. Every failure on a 30-task benchmark is assigned one cause. Findings: the graph succeeds on 57% against 3% for the same model as a free agent
+(it made no tool call in any of 30 runs) and 20% with a directive prompt; 11 of the graph's 13 failures are search misses; and the verifier never fired, which the README states instead of claiming credit.
+
+### [docextract](https://github.com/muhammadshayan124/docextract) — scanned report to verified JSON, with routing to human review
+
+Synthetic scans at four quality levels, OCR, rule and small-LLM extraction, and constraint-based validation (bid <= ask, change = bid - previous close, ...) that decides which fields a person must check.
+The first run exposed my parser and an OCR angle classifier that flipped short numbers upside down; the parser was then frozen in a commit before a held-out corpus was scored. Held-out: 100% field
+accuracy at severities 0-2, 61.8% on bad fax-quality pages; the 1.7B model alone is far worse than rules; the hybrid keeps accuracy but cuts the review needed for a 1% error target from 25% to 14% of fields.
+Synthetic documents only, and no real handwriting.
+
 ### [Sentinel](https://github.com/muhammadshayan124/sentinel) — multimodal RAG agent
 
 [![CI](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammadshayan124/sentinel/actions/workflows/ci.yml)
